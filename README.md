@@ -36,22 +36,34 @@ The simulation includes:
 
 ## Prerequisites
 
-- Python 3.7+
+- **Python 3.12** (see the note below -- newer versions such as 3.14 will not work)
 - `pip` or equivalent package manager
 
 ## Installation
 
-Install the required packages:
+The `openfhe` PyPI package ships a compiled binary built for one specific Python version
+and Linux release (e.g. the `.24.4` builds target Ubuntu 24.04 + Python 3.12). On other
+Python versions, importing fails with `ModuleNotFoundError: No module named 'openfhe.openfhe'`.
+The easiest fix is a Python 3.12 virtual environment using `uv`:
+
+```bash
+pip install uv
+uv venv --python 3.12 .venv
+source .venv/bin/activate
+uv pip install openfhe numpy scipy matplotlib
+```
+
+Re-run `source .venv/bin/activate` in each new terminal.
+
+If you already have Python 3.12, plain pip works:
 
 ```bash
 pip install openfhe scipy matplotlib numpy
 ```
 
-If `pip` is not recognized:
-
-```bash
-python -m pip install openfhe scipy matplotlib numpy
-```
+If you get a `GLIBC` error, your Linux release is older than the build. Check
+`cat /etc/os-release`; on Ubuntu 22.04 use Python 3.10 with
+`uv pip install openfhe==1.5.1.0.22.4 numpy scipy matplotlib`.
 
 ## Running
 
@@ -178,9 +190,9 @@ balances control effort against state error and produces a much smaller, better-
 gain matrix (`max|K| ≈ 57` here) while still stabilizing the whole chain -- it's the
 same `u = -Kx` control law, just designed differently.
 
-## Why BGV, and what it changes compared with BGV
+## Why BGV, and what it changes compared with CKKS
 
-BGV performs **exact modular integer arithmetic** (mod a plaintext modulus `t`), whereas BGV
+BGV performs **exact modular integer arithmetic** (mod a plaintext modulus `t`), whereas CKKS
 performs approximate arithmetic on real numbers. The state and gain are real-valued, so they
 are fixed-point encoded as integers around the encrypted computation:
 
@@ -197,7 +209,7 @@ Parameter notes:
 - `t = 274878136321` (~2^38) is a prime with `t = 1 mod 2N`, which enables SIMD slot packing.
   The result must satisfy `|u| * 2^30 < t/2` (i.e. `|u| < 128`; the peak here is ~57). The
   simulation checks this every step and raises an error rather than silently wrapping mod `t`.
-- Ring dimension is `N = 16384` (BGV version used 8192). With 128-bit security, N = 8192 only
+- Ring dimension is `N = 16384` (the original CKKS version used 8192). With 128-bit security, N = 8192 only
   supports a plaintext modulus of about 22 bits, too small for this fixed-point range.
 - Multiplicative depth 1 (one plaintext-ciphertext multiply).
 - Precision can be traded against range by changing `SCALE_X`, `SCALE_K`, and

@@ -55,18 +55,18 @@ Final plaintext state: [ 2.93596582e-04 -6.16361335e-05  5.28482125e-04 -1.05372
 Final encrypted-controller state: [ 2.94072286e-04 -6.20051137e-05  5.29307612e-04 -1.05791133e-04
   6.62011431e-04 -1.16912851e-04  6.72530470e-04 -8.74858630e-05
   5.64990206e-04 -1.74529935e-05  3.59746434e-04  8.48337527e-05
-  8.37326305e-05  2.02178221e-04 -2.34896069e-04  3.19089232e-04
+  8.37326304e-05  2.02178221e-04 -2.34896069e-04  3.19089232e-04
  -5.54524364e-04  5.11553725e-04]
 
 6. ACCURACY
-Maximum state error (full 18-dim vector norm): 4.347968341978e-04
+Maximum state error (full 18-dim vector norm): 4.347968341976e-04
 Maximum control error: 6.665703762547e-03
 
 7. HE TIMING
-Average encryption: 5.894044 ms/step
-Average HE dot product: 26.752122 ms/step
-Average decryption: 1.115794 ms/step
-Total: 33.761961 ms/step
+Average encryption: 16.001029 ms/step
+Average HE dot product: 61.971074 ms/step
+Average decryption: 3.234204 ms/step
+Total: 81.206307 ms/step
 
 8. FILES
 control_data.csv      - combined numerical results (all masses)
